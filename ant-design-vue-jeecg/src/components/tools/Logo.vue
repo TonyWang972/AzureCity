@@ -21,7 +21,7 @@
     props: {
       title: {
         type: String,
-        default: ' Azure Cizy',
+        default: ' Azure City',
         required: false
       },
       showTitle: {
