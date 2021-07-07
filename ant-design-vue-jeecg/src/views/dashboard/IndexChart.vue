@@ -2,7 +2,7 @@
   <div class="page-header-index-wide">
     <a-row :gutter="24">
       <a-col :sm="24" :md="12" :xl="6" :style="{ marginBottom: '24px' }">
-        <chart-card :loading="loading" title="总销售额" total="￥126,560">
+        <chart-card :loading="loading" title="总投诉量" total="￥126,560">
           <a-tooltip title="指标说明" slot="action">
             <a-icon type="info-circle-o" />
           </a-tooltip>
@@ -16,7 +16,7 @@
               11%
             </trend>
           </div>
-          <template slot="footer">日均销售额<span>￥ 234.56</span></template>
+          <template slot="footer">日均投诉量<span>10</span></template>
         </chart-card>
       </a-col>
       <a-col :sm="24" :md="12" :xl="6" :style="{ marginBottom: '24px' }">
@@ -27,7 +27,7 @@
           <div>
             <mini-area />
           </div>
-          <template slot="footer">日订单量<span> {{ '1234' | NumberFormat }}</span></template>
+          <template slot="footer">日投诉量<span> {{ '1234' | NumberFormat }}</span></template>
         </chart-card>
       </a-col>
       <a-col :sm="24" :md="12" :xl="6" :style="{ marginBottom: '24px' }">
@@ -38,7 +38,7 @@
           <div>
             <mini-bar :height="40" />
           </div>
-          <template slot="footer">转化率 <span>60%</span></template>
+          <template slot="footer">投诉满意率 <span>60%</span></template>
         </chart-card>
       </a-col>
       <a-col :sm="24" :md="12" :xl="6" :style="{ marginBottom: '24px' }">
@@ -78,20 +78,20 @@
           <a-tab-pane loading="true" tab="销售额" key="1">
             <a-row>
               <a-col :xl="16" :lg="12" :md="12" :sm="24" :xs="24">
-                <bar title="销售额排行" :dataSource="barData"/>
+                <bar title="投诉量排行" :dataSource="barData"/>
               </a-col>
               <a-col :xl="8" :lg="12" :md="12" :sm="24" :xs="24">
-                <rank-list title="门店销售排行榜" :list="rankList"/>
+                <rank-list title="投诉量排行榜" :list="rankList1"/>
               </a-col>
             </a-row>
           </a-tab-pane>
-          <a-tab-pane tab="销售趋势" key="2">
+          <a-tab-pane tab="投诉趋势" key="2">
             <a-row>
               <a-col :xl="16" :lg="12" :md="12" :sm="24" :xs="24">
-                <bar title="销售额趋势" :dataSource="barData"/>
+                <bar title="投诉趋势" :dataSource="barData"/>
               </a-col>
               <a-col :xl="8" :lg="12" :md="12" :sm="24" :xs="24">
-                <rank-list title="门店销售排行榜" :list="rankList"/>
+                <rank-list title="投诉量排行榜" :list="rankList2"/>
               </a-col>
             </a-row>
           </a-tab-pane>
@@ -150,13 +150,8 @@
   import Trend from '@/components/Trend'
   import { getLoginfo,getVisitInfo } from '@/api/api'
 
-  const rankList = []
-  for (let i = 0; i < 7; i++) {
-    rankList.push({
-      name: '白鹭岛 ' + (i+1) + ' 号店',
-      total: 1234.56 - i * 100
-    })
-  }
+  const rankList1 = [{name:"杭州电子科技大学",total:"150"}]
+  const rankList2 = [{name:"杭州电子科技大学",total:"150"}]
   const barData = []
   for (let i = 0; i < 12; i += 1) {
     barData.push({
@@ -183,7 +178,8 @@
       return {
         loading: true,
         center: null,
-        rankList,
+        rankList1,
+        rankList2,
         barData,
         loginfo:{},
         visitFields:['ip','visit'],
