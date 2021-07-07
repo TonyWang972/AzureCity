@@ -7,6 +7,7 @@ import Storage from 'vue-ls'
 import router from './router'
 import store from './store/'
 import { VueAxios } from "@/utils/request"
+import axios from 'axios' 
 
 require('@jeecg/antd-online-mini')
 require('@jeecg/antd-online-mini/dist/OnlineForm.css')
@@ -49,6 +50,7 @@ import '@/components/JVxeCells/install'
 //表单验证
 import { rules } from '@/utils/rules'
 Vue.prototype.rules = rules
+Vue.prototype.$axios = axios; 
 Vue.config.productionTip = false
 Vue.use(Storage, config.storageOptions)
 Vue.use(Antd)
