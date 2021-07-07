@@ -1,5 +1,9 @@
 package org.jeecg.modules.azurecity.authentication.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
+import org.jeecg.common.aspect.annotation.AutoLog;
 import org.jeecg.modules.azurecity.authentication.entity.UserEntity;
 import org.jeecg.modules.azurecity.authentication.exception.RepeatSubmitException;
 import org.jeecg.modules.azurecity.authentication.service.AuthService;
@@ -16,9 +20,11 @@ import java.util.List;
  * @Description 实名认证相关模块
  * @date 2021/7/6
  */
+@Api(tags = "实名认证模块")
 @RequestMapping("/sys/auth")
 @RestController
 @EnableSwagger2WebMvc
+@Slf4j
 public class AuthController {
 
     @Autowired
@@ -29,6 +35,8 @@ public class AuthController {
      * @param user
      * @return
      */
+    @AutoLog(value = "提交申请")
+    @ApiOperation(value = "提交申请", notes = "提交申请")
     @PostMapping("/submit-information")
     public R submitInformation(@RequestBody UserAuthTo user) {
         try {
@@ -44,6 +52,8 @@ public class AuthController {
      * @param user
      * @return
      */
+    @AutoLog(value = "修改申请")
+    @ApiOperation(value = "修改申请", notes = "修改申请")
     @PostMapping("/update-information")
     public R updateInformation(@RequestBody UserAuthTo user) {
         try {
@@ -59,6 +69,8 @@ public class AuthController {
      * @param id
      * @return
      */
+    @AutoLog(value = "通过认证")
+    @ApiOperation(value = "通过认证", notes = "通过认证")
     @GetMapping("/pass-auth")
     public R passAuth(@RequestParam String id) {
         authService.passAuth(id);
@@ -72,6 +84,8 @@ public class AuthController {
      * @param pageSize 页大小
      * @return
      */
+    @AutoLog(value = "获取申请")
+    @ApiOperation(value = "获取申请", notes = "获取申请")
     @GetMapping("/list")
     public R listAll(int currentPage, int pageSize) {
         List<UserAuthTo> list = authService.getAuthList(currentPage, pageSize);
@@ -84,6 +98,8 @@ public class AuthController {
      * @param id
      * @return
      */
+    @AutoLog(value = "获取用户")
+    @ApiOperation(value = "获取用户", notes = "获取用户")
     @GetMapping("/user/{id}")
     public R getUserById(@PathVariable("id") String id) {
         UserEntity user = authService.getUserById(id);
