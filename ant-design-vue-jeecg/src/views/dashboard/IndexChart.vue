@@ -2,7 +2,7 @@
   <div class="page-header-index-wide">
     <a-row :gutter="24">
       <a-col :sm="24" :md="12" :xl="6" :style="{ marginBottom: '24px' }">
-        <chart-card :loading="loading" title="总投诉量" total="￥126,560">
+        <chart-card :loading="loading" title="总投诉量" total="1520">
           <a-tooltip title="指标说明" slot="action">
             <a-icon type="info-circle-o" />
           </a-tooltip>
@@ -20,29 +20,32 @@
         </chart-card>
       </a-col>
       <a-col :sm="24" :md="12" :xl="6" :style="{ marginBottom: '24px' }">
-        <chart-card :loading="loading" title="订单量" :total="8846 | NumberFormat">
+        <chart-card :loading="loading" title="当前城市AQI" :total="hzWeatherInfo.aqi">
           <a-tooltip title="指标说明" slot="action">
             <a-icon type="info-circle-o" />
           </a-tooltip>
-          <div>
-            <mini-area />
+          <div> 
+            <span slot="term">PM2.5指数：{{hzWeatherInfo.pm2_5}}</span>
           </div>
-          <template slot="footer">日投诉量<span> {{ '1234' | NumberFormat }}</span></template>
+          <div> 
+            <span slot="term">质量评级：</span><span :style="{'color':hzWeatherInfo.color,'font-weight':'bold'}"> {{hzWeatherInfo.quality}}</span>
+          </div>
+          <template slot="footer">更新时间<span> {{hzWeatherInfo.time}}</span></template>
         </chart-card>
       </a-col>
       <a-col :sm="24" :md="12" :xl="6" :style="{ marginBottom: '24px' }">
-        <chart-card :loading="loading" title="支付笔数" :total="6560 | NumberFormat">
+        <chart-card :loading="loading" title="企业处理平均时长（天）" :total="2.35">
           <a-tooltip title="指标说明" slot="action">
             <a-icon type="info-circle-o" />
           </a-tooltip>
           <div>
             <mini-bar :height="40" />
           </div>
-          <template slot="footer">投诉满意率 <span>60%</span></template>
+          <template slot="footer">企业处理率 <span>95%</span></template>
         </chart-card>
       </a-col>
       <a-col :sm="24" :md="12" :xl="6" :style="{ marginBottom: '24px' }">
-        <chart-card :loading="loading" title="运营活动效果" total="78%">
+        <chart-card :loading="loading" title="投诉满意率" total="78%">
           <a-tooltip title="指标说明" slot="action">
             <a-icon type="info-circle-o" />
           </a-tooltip>
@@ -66,16 +69,8 @@
     <a-card :loading="loading" :bordered="false" :body-style="{padding: '0'}">
       <div class="salesCard">
         <a-tabs default-active-key="1" size="large" :tab-bar-style="{marginBottom: '24px', paddingLeft: '16px'}">
-          <div class="extra-wrapper" slot="tabBarExtraContent">
-            <div class="extra-item">
-              <a>今日</a>
-              <a>本周</a>
-              <a>本月</a>
-              <a>本年</a>
-            </div>
-            <a-range-picker :style="{width: '256px'}" />
-          </div>
-          <a-tab-pane loading="true" tab="销售额" key="1">
+
+          <a-tab-pane loading="true" tab="投诉量" key="1">
             <a-row>
               <a-col :xl="16" :lg="12" :md="12" :sm="24" :xs="24">
                 <bar title="投诉量排行" :dataSource="barData"/>
@@ -88,10 +83,10 @@
           <a-tab-pane tab="投诉趋势" key="2">
             <a-row>
               <a-col :xl="16" :lg="12" :md="12" :sm="24" :xs="24">
-                <bar title="投诉趋势" :dataSource="barData"/>
+                <line-chart-multid title="投诉趋势" :fields="complaintFields" :dataSource="complaintInfo"></line-chart-multid>
               </a-col>
               <a-col :xl="8" :lg="12" :md="12" :sm="24" :xs="24">
-                <rank-list title="投诉量排行榜" :list="rankList2"/>
+                <rank-list title="投诉地区排行榜" :list="rankList2"/>
               </a-col>
             </a-row>
           </a-tab-pane>
@@ -151,7 +146,7 @@
   import { getLoginfo,getVisitInfo } from '@/api/api'
 
   const rankList1 = [{name:"杭州电子科技大学",total:"150"}]
-  const rankList2 = [{name:"杭州电子科技大学",total:"150"}]
+  const rankList2 = [{name:"温州",total:"150"},{name:"杭州",total:"130"},{name:"无锡",total:"91"},{name:"新疆",total:"51"}]
   const barData = []
   for (let i = 0; i < 12; i += 1) {
     barData.push({
@@ -176,6 +171,11 @@
     },
     data() {
       return {
+        hzWeatherInfo:{},
+        complaintInfo:[{"企业投诉":12,"车辆投诉":15,tian:"2021-07-05",type: "07-05"}
+        ,{"企业投诉":15,"车辆投诉":11,tian: "2021-07-06",type: "07-06"}
+        ,{"企业投诉":12,"车辆投诉":13,tian: "2021-07-07",type: "07-07"}],
+        complaintFields:['企业投诉','车辆投诉'],
         loading: true,
         center: null,
         rankList1,
@@ -188,6 +188,23 @@
       }
     },
     created() {
+      this.$axios({
+        method:'get',									
+        url:'http://api.tianapi.com/txapi/aqi/index',
+        params: {      
+            key:"60374cf0ae273370a18b138f8ce6e4b2",
+            area:"杭州"
+        }
+        }).then((response) =>{          //返回promise(ES6语法)
+          this.hzWeatherInfo=response.data.newslist[0]
+          if(this.hzWeatherInfo.quality=="优质"){
+          this.hzWeatherInfo.color="#32CD32"
+      }
+            console.log(this.hzWeatherInfo) 
+        }).catch((error) =>{
+            console.log(error)       //请求失败返回的数据
+        }),
+
       setTimeout(() => {
         this.loading = !this.loading
       }, 1000)
@@ -206,10 +223,11 @@
         getVisitInfo().then(res=>{
           if(res.success){
              this.visitInfo = res.result;
+             console.log(this.visitInfo);
            }
          })
       },
-    }
+    },
   }
 </script>
 
