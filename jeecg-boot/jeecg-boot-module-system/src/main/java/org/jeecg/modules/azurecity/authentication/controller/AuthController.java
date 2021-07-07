@@ -40,13 +40,18 @@ public class AuthController {
     }
 
     /**
-     * TODO 没写完的
+     * 用户修改实名表单信息
      * @param user
      * @return
      */
     @PostMapping("/update-information")
     public R updateInformation(@RequestBody UserAuthTo user) {
-        return null;
+        try {
+            authService.updateInformation(user);
+            return R.ok();
+        } catch (RepeatSubmitException e) {
+            return R.error(500, e.getMessage());
+        }
     }
 
     /**
@@ -63,6 +68,8 @@ public class AuthController {
 
     /**
      * 获取所有提交的申请
+     * @param currentPage 当前页
+     * @param pageSize 页大小
      * @return
      */
     @GetMapping("/list")
