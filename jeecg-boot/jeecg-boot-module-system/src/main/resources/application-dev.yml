@@ -283,3 +283,8 @@ justauth:
     type: default
     prefix: 'demo::'
     timeout: 1h
+#分页插件
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
