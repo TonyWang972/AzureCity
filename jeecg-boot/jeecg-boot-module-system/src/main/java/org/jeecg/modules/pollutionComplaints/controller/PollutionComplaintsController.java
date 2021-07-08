@@ -5,6 +5,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.system.query.QueryGenerator;
+import org.jeecg.modules.companyComplaints.entity.CompanyComplaint;
+import org.jeecg.modules.companyComplaints.service.ICompanyComplaintService;
 import org.jeecg.modules.pollutionComplaints.entity.PollutionComplaints;
 import org.jeecg.modules.pollutionComplaints.service.IPollutionComplaintsService;
 
@@ -32,9 +34,12 @@ import org.jeecg.common.aspect.annotation.AutoLog;
 @RequestMapping("/pollutionComplaints/pollutionComplaints")
 @Slf4j
 public class PollutionComplaintsController extends JeecgController<PollutionComplaints, IPollutionComplaintsService> {
-	@Autowired
-	private IPollutionComplaintsService pollutionComplaintsService;
-	
+	 @Autowired
+	 private IPollutionComplaintsService pollutionComplaintsService;
+	 @Autowired
+	 private ICompanyComplaintService companyComplaintService;
+
+
 	/**
 	 * 分页列表查询
 	 *
@@ -64,15 +69,23 @@ public class PollutionComplaintsController extends JeecgController<PollutionComp
 	 * @return
 	 */
 	@AutoLog(value = "污染投诉表-添加")
-	@ApiOperation(value="污染投诉表-添加", notes="污染投诉表-添加" +
-			"/n cptType（车辆投诉）：1412959520967282690" +
-			"/n cptType（其他投诉）：1412959520967282690" +
-			"/n cptType（其他投诉）：1412959520967282690" +
-			"")
+	@ApiOperation(value="污染投诉表-添加", notes="污染投诉表-添加")
 	@PostMapping(value = "/add")
 	public Result<?> add(@RequestBody PollutionComplaints pollutionComplaints) {
 		pollutionComplaintsService.save(pollutionComplaints);
-		//if(pollutionComplaints.getCptType().)
+		if(pollutionComplaints.getCptType().equals("company")) {
+			String companyName = pollutionComplaints.getCptObject();
+			if(companyComplaintService.companyComplantIsExist(companyName)){
+				//若存在对该企业的投诉，则投诉次数+1
+				companyComplaintService.addCompanyComplant(companyName);
+			}else{
+				//若不存在改投诉，则新建
+				CompanyComplaint companyComplaint = new CompanyComplaint();
+				companyComplaint.setCompanyName(pollutionComplaints.getCptObject());
+				companyComplaint.setComCptTimes(1);
+				companyComplaintService.save(companyComplaint);
+			}
+		}
 		return Result.OK("添加成功！");
 	}
 	

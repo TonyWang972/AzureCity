@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.jeecg.modules.companyComplaints.mapper.CompanyComplaintMapper">
+    <update id="addCompanyComplant" parameterType="String">
+        update company_complaints set com_cpt_times = com_cpt_times+1 where company_name = #{companyName}
+    </update>
 
+    <select id="selectByCompanyName" resultType="Integer">
+        select count(*) from company_complaints where company_name = #{companyName}
+    </select>
 </mapper>
