@@ -283,8 +283,26 @@ justauth:
     type: default
     prefix: 'demo::'
     timeout: 1h
-#分页插件
-pagehelper:
-  helper-dialect: mysql
-  reasonable: true
-  support-methods-arguments: true
+#第三方APP对接
+third-app:
+  enabled: false
+  type:
+    #企业微信
+    WECHAT_ENTERPRISE:
+      enabled: false
+      #CORP_ID
+      client-id: ??
+      #SECRET
+      client-secret: ??
+      #自建应用id
+      agent-id: ??
+      #自建应用秘钥（新版企微需要配置）
+      # agent-app-secret: ??
+    #钉钉
+    DINGTALK:
+      enabled: false
+      # appKey
+      client-id: ??
+      # appSecret
+      client-secret: ??
+      agent-id: ??
