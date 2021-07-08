@@ -25,7 +25,7 @@
           </a-col>
           <a-col :span="24">
             <a-form-model-item label="污染投诉类型" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="cptType">
-              <a-input v-model="model.cptType" placeholder="请输入污染投诉类型"  ></a-input>
+              <j-category-select v-model="model.cptType" pcode="B05" placeholder="请选择污染投诉类型" back="cptTypeText" @change="handleCategoryChange" />
             </a-form-model-item>
           </a-col>
           <a-col :span="24">
@@ -145,6 +145,9 @@
          
         })
       },
+      handleCategoryChange(value,backObj){
+         this.model = Object.assign(this.model, backObj);
+      }
     }
   }
 </script>

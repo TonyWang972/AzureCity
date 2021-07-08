@@ -1,9 +1,7 @@
 package org.jeecg.modules.pollutionComplaints.entity;
 
 import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
-import java.util.Date;
-import java.math.BigDecimal;
+
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -75,6 +73,10 @@ public class PollutionComplaints implements Serializable {
 	@Excel(name = "污染投诉类型", width = 15)
     @ApiModelProperty(value = "污染投诉类型")
     private java.lang.String cptType;
+	/**污染投诉类型*/
+	@Excel(name = "污染投诉类型", width = 15)
+    @ApiModelProperty(value = "污染投诉类型")
+    private java.lang.String cptTypeText;
 	/**投诉简要位置*/
 	@Excel(name = "投诉简要位置", width = 15)
     @ApiModelProperty(value = "投诉简要位置")

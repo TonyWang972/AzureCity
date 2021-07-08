@@ -11,8 +11,10 @@
             <a-icon slot="prefix" type="lock" :style="{ color: 'rgba(0,0,0,.25)' }"/>
           </a-input>
         </a-form-model-item>
-
-        <a-row :gutter="0">
+<!-- 
+  验证码功能暂时取消
+ -->
+        <!-- <a-row :gutter="0">
           <a-col :span="16">
             <a-form-model-item required prop="inputCode">
               <a-input v-model="model.inputCode" size="large" type="text" placeholder="请输入验证码">
@@ -24,7 +26,7 @@
             <img v-if="requestCodeSuccess" style="margin-top: 2px;" :src="randCodeImage" @click="handleChangeCheckCode"/>
             <img v-else style="margin-top: 2px;" src="../../assets/checkcode.png" @click="handleChangeCheckCode"/>
           </a-col>
-        </a-row>
+        </a-row> -->
       </a-form-model>
     </div>
 </template>
@@ -68,21 +70,21 @@
     methods:{
       ...mapActions(['Login']),
       /**刷新验证码*/
-      handleChangeCheckCode(){
-        this.currdatetime = new Date().getTime();
-        this.model.inputCode = ''
-        getAction(`/sys/randomImage/${this.currdatetime}`).then(res=>{
-          if(res.success){
-            this.randCodeImage = res.result
-            this.requestCodeSuccess=true
-          }else{
-            this.$message.error(res.message)
-            this.requestCodeSuccess=false
-          }
-        }).catch(()=>{
-          this.requestCodeSuccess=false
-        })
-      },
+      // handleChangeCheckCode(){
+      //   this.currdatetime = new Date().getTime();
+      //   this.model.inputCode = ''
+      //   getAction(`/sys/randomImage/${this.currdatetime}`).then(res=>{
+      //     if(res.success){
+      //       this.randCodeImage = res.result
+      //       this.requestCodeSuccess=true
+      //     }else{
+      //       this.$message.error(res.message)
+      //       this.requestCodeSuccess=false
+      //     }
+      //   }).catch(()=>{
+      //     this.requestCodeSuccess=false
+      //   })
+      // },
       // 判断登录类型
       handleUsernameOrEmail (rule, value, callback) {
         const regex = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;
@@ -123,12 +125,12 @@
       },
       //账号密码登录
       handleLogin(rememberMe){
-        this.validateFields([ 'username', 'password', 'inputCode' ], (err)=>{
+        this.validateFields([ 'username', 'password'], (err)=>{
           if(!err){
             let loginParams = {
               username: this.model.username,
               password: this.model.password,
-              captcha: this.model.inputCode,
+              //captcha: this.model.inputCode,
               checkKey: this.currdatetime,
               remember_me: rememberMe,
             }

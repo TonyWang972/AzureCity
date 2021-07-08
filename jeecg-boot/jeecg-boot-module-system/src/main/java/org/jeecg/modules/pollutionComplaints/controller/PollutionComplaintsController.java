@@ -1,17 +1,10 @@
 package org.jeecg.modules.pollutionComplaints.controller;
 
 import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.system.query.QueryGenerator;
-import org.jeecg.common.util.oConvertUtils;
 import org.jeecg.modules.pollutionComplaints.entity.PollutionComplaints;
 import org.jeecg.modules.pollutionComplaints.service.IPollutionComplaintsService;
 
@@ -20,18 +13,10 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 
-import org.jeecgframework.poi.excel.ExcelImportUtil;
-import org.jeecgframework.poi.excel.def.NormalExcelConstants;
-import org.jeecgframework.poi.excel.entity.ExportParams;
-import org.jeecgframework.poi.excel.entity.ImportParams;
-import org.jeecgframework.poi.excel.view.JeecgEntityExcelView;
 import org.jeecg.common.system.base.controller.JeecgController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
-import com.alibaba.fastjson.JSON;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.jeecg.common.aspect.annotation.AutoLog;
@@ -79,10 +64,15 @@ public class PollutionComplaintsController extends JeecgController<PollutionComp
 	 * @return
 	 */
 	@AutoLog(value = "污染投诉表-添加")
-	@ApiOperation(value="污染投诉表-添加", notes="污染投诉表-添加")
+	@ApiOperation(value="污染投诉表-添加", notes="污染投诉表-添加" +
+			"/n cptType（车辆投诉）：1412959520967282690" +
+			"/n cptType（其他投诉）：1412959520967282690" +
+			"/n cptType（其他投诉）：1412959520967282690" +
+			"")
 	@PostMapping(value = "/add")
 	public Result<?> add(@RequestBody PollutionComplaints pollutionComplaints) {
 		pollutionComplaintsService.save(pollutionComplaints);
+		//if(pollutionComplaints.getCptType().)
 		return Result.OK("添加成功！");
 	}
 	

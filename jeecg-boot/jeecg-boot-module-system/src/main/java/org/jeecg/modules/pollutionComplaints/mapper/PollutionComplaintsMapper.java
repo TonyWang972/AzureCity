@@ -1,8 +1,5 @@
 package org.jeecg.modules.pollutionComplaints.mapper;
 
-import java.util.List;
-
-import org.apache.ibatis.annotations.Param;
 import org.jeecg.modules.pollutionComplaints.entity.PollutionComplaints;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 

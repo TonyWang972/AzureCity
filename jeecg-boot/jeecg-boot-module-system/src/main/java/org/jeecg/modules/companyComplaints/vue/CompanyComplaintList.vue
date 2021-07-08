@@ -5,8 +5,8 @@
       <a-form layout="inline" @keyup.enter.native="searchQuery">
         <a-row :gutter="24">
           <a-col :xl="6" :lg="7" :md="8" :sm="24">
-            <a-form-item label="投诉对象名称">
-              <a-input placeholder="请输入投诉对象名称" v-model="queryParam.cptObject"></a-input>
+            <a-form-item label="企业名称">
+              <a-input placeholder="请输入企业名称" v-model="queryParam.companyName"></a-input>
             </a-form-item>
           </a-col>
           <a-col :xl="6" :lg="7" :md="8" :sm="24">
@@ -27,7 +27,7 @@
     <!-- 操作按钮区域 -->
     <div class="table-operator">
       <a-button @click="handleAdd" type="primary" icon="plus">新增</a-button>
-      <a-button type="primary" icon="download" @click="handleExportXls('污染投诉表')">导出</a-button>
+      <a-button type="primary" icon="download" @click="handleExportXls('企业整改投诉情况')">导出</a-button>
       <a-upload name="file" :showUploadList="false" :multiple="false" :headers="tokenHeader" :action="importExcelUrl" @change="handleImportExcel">
         <a-button type="primary" icon="import">导入</a-button>
       </a-upload>
@@ -104,7 +104,7 @@
       </a-table>
     </div>
 
-    <pollution-complaints-modal ref="modalForm" @ok="modalFormOk"></pollution-complaints-modal>
+    <company-complaint-modal ref="modalForm" @ok="modalFormOk"></company-complaint-modal>
   </a-card>
 </template>
 
@@ -113,18 +113,17 @@
   import '@/assets/less/TableExpand.less'
   import { mixinDevice } from '@/utils/mixin'
   import { JeecgListMixin } from '@/mixins/JeecgListMixin'
-  import PollutionComplaintsModal from './modules/PollutionComplaintsModal'
-  import {filterMultiDictText} from '@/components/dict/JDictSelectUtil'
+  import CompanyComplaintModal from './modules/CompanyComplaintModal'
 
   export default {
-    name: 'PollutionComplaintsList',
+    name: 'CompanyComplaintList',
     mixins:[JeecgListMixin, mixinDevice],
     components: {
-      PollutionComplaintsModal
+      CompanyComplaintModal
     },
     data () {
       return {
-        description: '污染投诉表管理页面',
+        description: '企业整改投诉情况管理页面',
         // 表头
         columns: [
           {
@@ -138,56 +137,25 @@
             }
           },
           {
-            title:'投诉对象名称',
+            title:'企业名称',
             align:"center",
-            dataIndex: 'cptObject'
+            dataIndex: 'companyName'
           },
           {
-            title:'投诉描述 ',
+            title:'企业被投诉次数',
             align:"center",
-            dataIndex: 'cptDescribe'
+            dataIndex: 'comCptTimes'
           },
           {
-            title:'投诉图片',
+            title:'整改结果',
             align:"center",
-            dataIndex: 'cptPic',
-            scopedSlots: {customRender: 'imgSlot'}
+            dataIndex: 'comNowCondition',
+            scopedSlots: {customRender: 'htmlSlot'}
           },
           {
-            title:'投诉状态',
+            title:'整改日期',
             align:"center",
-            dataIndex: 'cptState_dictText'
-          },
-          {
-            title:'污染投诉类型',
-            align:"center",
-            dataIndex: 'cptType',
-            customRender: (text, record) => (text ? record['cpt_type_text'] : '')
-          },
-          {
-            title:'投诉简要位置',
-            align:"center",
-            dataIndex: 'cptPositionBrief'
-          },
-          {
-            title:'投诉详细位置',
-            align:"center",
-            dataIndex: 'cptPositionDetailil'
-          },
-          {
-            title:'投诉位置经度',
-            align:"center",
-            dataIndex: 'cptPositionLongitude'
-          },
-          {
-            title:'投诉位置纬度',
-            align:"center",
-            dataIndex: 'cptPositionLatitude'
-          },
-          {
-            title:'投诉提交日期',
-            align:"center",
-            dataIndex: 'cptSubmitTime',
+            dataIndex: 'comImproveDate',
             customRender:function (text) {
               return !text?"":(text.length>10?text.substr(0,10):text)
             }
@@ -202,11 +170,11 @@
           }
         ],
         url: {
-          list: "/pollutionComplaints/pollutionComplaints/list",
-          delete: "/pollutionComplaints/pollutionComplaints/delete",
-          deleteBatch: "/pollutionComplaints/pollutionComplaints/deleteBatch",
-          exportXlsUrl: "/pollutionComplaints/pollutionComplaints/exportXls",
-          importExcelUrl: "pollutionComplaints/pollutionComplaints/importExcel",
+          list: "/companyComplaints/companyComplaint/list",
+          delete: "/companyComplaints/companyComplaint/delete",
+          deleteBatch: "/companyComplaints/companyComplaint/deleteBatch",
+          exportXlsUrl: "/companyComplaints/companyComplaint/exportXls",
+          importExcelUrl: "companyComplaints/companyComplaint/importExcel",
           
         },
         dictOptions:{},
@@ -226,16 +194,10 @@
       },
       getSuperFieldList(){
         let fieldList=[];
-        fieldList.push({type:'string',value:'cptObject',text:'投诉对象名称',dictCode:''})
-        fieldList.push({type:'string',value:'cptDescribe',text:'投诉描述 ',dictCode:''})
-        fieldList.push({type:'string',value:'cptPic',text:'投诉图片',dictCode:''})
-        fieldList.push({type:'string',value:'cptState',text:'投诉状态',dictCode:'complaint_code'})
-        fieldList.push({type:'string',value:'cptType',text:'污染投诉类型'})
-        fieldList.push({type:'string',value:'cptPositionBrief',text:'投诉简要位置',dictCode:''})
-        fieldList.push({type:'string',value:'cptPositionDetailil',text:'投诉详细位置',dictCode:''})
-        fieldList.push({type:'string',value:'cptPositionLongitude',text:'投诉位置经度',dictCode:''})
-        fieldList.push({type:'string',value:'cptPositionLatitude',text:'投诉位置纬度',dictCode:''})
-        fieldList.push({type:'date',value:'cptSubmitTime',text:'投诉提交日期'})
+        fieldList.push({type:'string',value:'companyName',text:'企业名称',dictCode:''})
+        fieldList.push({type:'int',value:'comCptTimes',text:'企业被投诉次数',dictCode:''})
+        fieldList.push({type:'string',value:'comNowCondition',text:'整改结果',dictCode:''})
+        fieldList.push({type:'date',value:'comImproveDate',text:'整改日期'})
         this.superFieldList = fieldList
       }
     }
