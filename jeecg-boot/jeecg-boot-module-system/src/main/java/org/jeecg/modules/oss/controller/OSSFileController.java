@@ -5,9 +5,12 @@ import javax.servlet.http.HttpServletRequest;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.jeecg.common.api.vo.Result;
+import org.jeecg.common.aspect.annotation.AutoLog;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.modules.oss.entity.OSSFile;
 import org.jeecg.modules.oss.service.IOSSFileService;
@@ -21,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+@Api(tags="OSS图片上传")
 @Slf4j
 @Controller
 @RequestMapping("/sys/oss/file")
@@ -45,6 +49,8 @@ public class OSSFileController {
 
 	@ResponseBody
 	@PostMapping("/upload")
+	@AutoLog(value = "图片上传")
+	@ApiOperation(value="图片上传", notes="图片上传")
 	//@RequiresRoles("admin")
 	public Result upload(@RequestParam("file") MultipartFile multipartFile) {
 		Result result = new Result();

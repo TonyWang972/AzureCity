@@ -1,12 +1,14 @@
 package org.jeecg.modules.pollutionComplaints.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.modules.companyComplaints.entity.CompanyComplaint;
 import org.jeecg.modules.companyComplaints.service.ICompanyComplaintService;
+import org.jeecg.modules.pollutionComplaints.entity.ComplaintData;
 import org.jeecg.modules.pollutionComplaints.entity.PollutionComplaints;
 import org.jeecg.modules.pollutionComplaints.service.IPollutionComplaintsService;
 
@@ -39,6 +41,22 @@ public class PollutionComplaintsController extends JeecgController<PollutionComp
 	 @Autowired
 	 private ICompanyComplaintService companyComplaintService;
 
+
+	 /**
+	  * 数据报表
+	  *
+	  * @return
+	  */
+	 @AutoLog(value = "数据报表数据查询")
+	 @ApiOperation(value="数据报表数据查询", notes="数据报表数据查询")
+	 @GetMapping(value = "/getComplimentData")
+	 public Result<?> getComplimentData() {
+		 List<ComplaintData> complaintDataList = pollutionComplaintsService.getComplimentData();
+		 if(complaintDataList.size()==0) {
+			 return Result.error("未找到对应数据");
+		 }
+		 return Result.OK(complaintDataList);
+	 }
 
 	/**
 	 * 分页列表查询

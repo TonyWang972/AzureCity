@@ -123,6 +123,9 @@ public class ShiroConfig {
         //大屏设计器排除
         filterChainDefinitionMap.put("/bigscreen/**", "anon");
 
+        //data列表排除
+        filterChainDefinitionMap.put("//pollutionComplaints/pollutionComplaints/**", "anon");
+
         //测试示例
         filterChainDefinitionMap.put("/test/bigScreen/**", "anon"); //大屏模板例子
         //filterChainDefinitionMap.put("/test/jeecgDemo/rabbitMqClientTest/**", "anon"); //MQ测试

@@ -1,7 +1,10 @@
 package org.jeecg.modules.pollutionComplaints.service;
 
+import org.jeecg.modules.pollutionComplaints.entity.ComplaintData;
 import org.jeecg.modules.pollutionComplaints.entity.PollutionComplaints;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
  * @Description: 污染投诉表
@@ -10,5 +13,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @Version: V1.0
  */
 public interface IPollutionComplaintsService extends IService<PollutionComplaints> {
-
+    /**
+     * 获取投诉信息列表
+     * @return
+     */
+    List<ComplaintData> getComplimentData();
 }
