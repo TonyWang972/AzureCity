@@ -1,7 +1,13 @@
 package org.jeecg.modules.upload.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.jeecg.common.api.vo.Result;
+import org.jeecg.common.aspect.annotation.AutoLog;
+import org.jeecg.modules.upload.mapper.AvatarMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,8 +20,12 @@ import java.io.IOException;
  * @Description
  * @date 2021/7/9
  */
+@Api(tags="头像修改")
 @RestController
 public class UploadController {
+
+    @Autowired
+    private AvatarMapper avatarMapper;
 
     @PostMapping("/upload")
     public Result<?> upload(@RequestParam("file") MultipartFile file) {
@@ -39,6 +49,15 @@ public class UploadController {
             return Result.error("上传失败，请稍后重试");
         }
 
+    }
+
+    @AutoLog(value = "头像修改")
+    @ApiOperation(value="头像修改", notes="头像修改")
+    @PostMapping("/user/avatar")
+    public Result<?> updateAvatar(@RequestParam("userId") String userId, @RequestParam("avatar") String avatar) {
+        avatarMapper.updateAvatar(userId, avatar);
+
+        return Result.OK();
     }
 
 }
