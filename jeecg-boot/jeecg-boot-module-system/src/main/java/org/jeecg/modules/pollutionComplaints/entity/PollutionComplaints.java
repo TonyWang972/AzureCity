@@ -69,14 +69,14 @@ public class PollutionComplaints implements Serializable {
 	@Dict(dicCode = "complaint_code")
     @ApiModelProperty(value = "投诉状态")
     private java.lang.String cptState;
+    /**投诉回复*/
+    @Excel(name = "投诉回复", width = 15)
+    @ApiModelProperty(value = "投诉回复")
+    private java.lang.String cptReply;
 	/**污染投诉类型*/
 	@Excel(name = "污染投诉类型", width = 15)
     @ApiModelProperty(value = "污染投诉类型")
     private java.lang.String cptType;
-	/**污染投诉类型*/
-	@Excel(name = "污染投诉类型", width = 15)
-    @ApiModelProperty(value = "污染投诉类型")
-    private java.lang.String cptTypeText;
 	/**投诉简要位置*/
 	@Excel(name = "投诉简要位置", width = 15)
     @ApiModelProperty(value = "投诉简要位置")
