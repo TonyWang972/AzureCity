@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,6 +24,8 @@ import java.util.Map;
  */
 @Service
 public class PollutionComplaintsServiceImpl extends ServiceImpl<PollutionComplaintsMapper, PollutionComplaints> implements IPollutionComplaintsService {
+    @Resource
+    private PollutionComplaintsMapper pollutionComplaintsMapper;
 
     @Override
     public List<ComplaintData> getComplimentData() {
@@ -32,8 +35,9 @@ public class PollutionComplaintsServiceImpl extends ServiceImpl<PollutionComplai
         for(int i=0 ; i<8;i++){
             ComplaintData complaintData = new ComplaintData();
             complaintData.setDate(pastSevenDays.get(i).toString());
-            System.out.println(pastSevenDays.get(i));
-            //complaintData.setComplaintNum();
+            int num = pollutionComplaintsMapper.selectComplimentNumByDay(pastSevenDays.get(i).toString());
+            String strNum = Integer.toString(num);
+            complaintData.setComplaintNum(strNum);
             complaintDataList.add(complaintData);
         }
         return complaintDataList;

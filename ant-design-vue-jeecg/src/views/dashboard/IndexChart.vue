@@ -145,15 +145,10 @@
   import Trend from '@/components/Trend'
   import { getLoginfo,getVisitInfo } from '@/api/api'
 
-  const rankList1 = [{name:"杭州电子科技大学",total:"150"}]
-  const rankList2 = [{name:"温州",total:"150"},{name:"杭州",total:"130"},{name:"无锡",total:"91"},{name:"新疆",total:"51"}]
-  const barData = []
-  for (let i = 0; i < 12; i += 1) {
-    barData.push({
-      x: `${i + 1}月`,
-      y: Math.floor(Math.random() * 1000) + 200
-    })
-  }
+  const rankList1 = [{name:"杭州电子科技大学",total:"13"},{name:"浙江大学",total:"13"}]
+  const rankList2 = [{name:"温州",total:"32"},{name:"杭州",total:"25"},{name:"无锡",total:"15"},{name:"新疆",total:"10"}]
+
+
   export default {
     name: "IndexChart",
     components: {
@@ -172,6 +167,7 @@
     data() {
       return {
         hzWeatherInfo:{},
+        barData:[],
         complaintInfo:[{"企业投诉":12,"车辆投诉":15,tian:"2021-07-05",type: "07-05"}
         ,{"企业投诉":15,"车辆投诉":11,tian: "2021-07-06",type: "07-06"}
         ,{"企业投诉":12,"车辆投诉":13,tian: "2021-07-07",type: "07-07"}],
@@ -179,8 +175,7 @@
         loading: true,
         center: null,
         rankList1,
-        rankList2,
-        barData,
+        rankList2, 
         loginfo:{},
         visitFields:['ip','visit'],
         visitInfo:[],
@@ -210,6 +205,28 @@
       }, 1000)
       this.initLogInfo();
     },
+
+      mounted() {
+      this.$axios({
+        method:'get',									
+        url:'http://182.92.125.128:8080/azurecity/pollutionComplaints/pollutionComplaints/getComplimentData',
+        // params: {      
+        //     key:"60374cf0ae273370a18b138f8ce6e4b2",
+        //     area:"杭州"
+        // }
+        }).then((response) =>{          //返回promise(ES6语法)
+          for (let i = 0; i < 8; i += 1) {
+            this.barData.push({
+              x: response.data.result[i].date,
+              y: response.data.result[i].complaintNum
+            })
+          }
+          console.log("barData:"+response.data.result) 
+        }).catch((error) =>{
+            console.log(error)       //请求失败返回的数据
+        })
+    },
+
     methods: {
       initLogInfo () {
         getLoginfo(null).then((res)=>{

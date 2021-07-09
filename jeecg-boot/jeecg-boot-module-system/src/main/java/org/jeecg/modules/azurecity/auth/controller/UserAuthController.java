@@ -60,7 +60,6 @@ public class UserAuthController extends JeecgController<UserAuth, IUserAuthServi
 	@GetMapping(value = "/pass")
 	public Result<?> passAuth(@RequestParam("id") String id) {
 		userAuthService.passAuth(id);
-
 		return Result.OK("已通过！");
 	}
 

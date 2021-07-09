@@ -10,5 +10,10 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @Version: V1.0
  */
 public interface PollutionComplaintsMapper extends BaseMapper<PollutionComplaints> {
+    /**
+     * 查询投诉数量
+     * @return int
+     */
+    int selectComplimentNumByDay(String day);
 
 }
