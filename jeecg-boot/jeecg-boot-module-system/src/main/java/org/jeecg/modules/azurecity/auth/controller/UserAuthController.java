@@ -84,6 +84,15 @@ public class UserAuthController extends JeecgController<UserAuth, IUserAuthServi
 		IPage<UserAuth> pageList = userAuthService.page(page, queryWrapper);
 		return Result.OK(pageList);
 	}
+
+	@AutoLog(value = "实名状况查询")
+	@ApiOperation(value="实名状况查询", notes="实名状况查询")
+	@GetMapping("/status")
+	public Result<?> selectStatus(@RequestParam("userId") String userId) {
+		Integer integer = userService.selectStatus(userId);
+
+		return Result.OK(integer);
+	}
 	
 	/**
 	 *   添加
