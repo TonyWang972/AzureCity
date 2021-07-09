@@ -19,6 +19,7 @@
         SELECT nm.id, nm.send_time, nm.titile, nm.sender, nm.msg_abstract, un.user_id, un.read_flag
         FROM user_notice un JOIN notice_message nm ON un.notice_id = nm.id
         WHERE un.user_id = #{userId}
+        ORDER BY nm.send_time DESC
     </select>
 
     <insert id="saveAll">
