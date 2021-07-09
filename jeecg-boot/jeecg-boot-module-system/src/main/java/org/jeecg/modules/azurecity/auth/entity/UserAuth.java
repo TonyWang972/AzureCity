@@ -1,21 +1,20 @@
 package org.jeecg.modules.azurecity.auth.entity;
 
-import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
-import java.util.Date;
-import java.math.BigDecimal;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.Data;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.jeecgframework.poi.excel.annotation.Excel;
-import org.jeecg.common.aspect.annotation.Dict;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import org.jeecg.common.aspect.annotation.Dict;
+import org.jeecgframework.poi.excel.annotation.Excel;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @Description: 实名申请统计表
@@ -34,33 +33,35 @@ public class UserAuth implements Serializable {
 	/**主键*/
 	@TableId(type = IdType.ASSIGN_ID)
     @ApiModelProperty(value = "主键")
-    private java.lang.String id;
+    private String id;
 	/**用户id*/
 	@Excel(name = "用户id", width = 15)
     @ApiModelProperty(value = "用户id")
-    private java.lang.String userId;
+    private String userId;
 	/**真实姓名*/
 	@Excel(name = "真实姓名", width = 15)
     @ApiModelProperty(value = "真实姓名")
-    private java.lang.String realname;
+    private String realname;
 	/**手机号*/
 	@Excel(name = "手机号", width = 15)
     @ApiModelProperty(value = "手机号")
-    private java.lang.String phone;
+    private String phone;
 	/**身份证正面*/
 	@Excel(name = "身份证正面", width = 15)
     @ApiModelProperty(value = "身份证正面")
-    private java.lang.String idCardFront;
+    private String idCardFront;
 	/**身份证反面*/
 	@Excel(name = "身份证反面", width = 15)
     @ApiModelProperty(value = "身份证反面")
-    private java.lang.String idCardBack;
+    private String idCardBack;
 	/**提交或更新日期*/
 	@JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd")
     @DateTimeFormat(pattern="yyyy-MM-dd")
     @ApiModelProperty(value = "提交或更新日期")
-    private java.util.Date updateTime;
+    private Date updateTime;
 	/**状态*/
-	@ApiModelProperty(value = "审核状态")
-	private java.lang.Integer status;
+	@Excel(name = "状态", width = 15, dicCode = "identity_verify_state")
+	@Dict(dicCode = "identity_verify_state")
+    @ApiModelProperty(value = "状态")
+    private Integer status;
 }
